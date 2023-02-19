@@ -1,0 +1,69 @@
+---
+title: "project_file"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+library(igraph) #igraph can be used if preferred for data processing
+library(sna) 
+library(ergm)
+library(tidyverse)
+library(intergraph)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+#Reading prior contacts file
+I <- read_csv(file = "9_11_HIJACKERS_PRIORCONTACTS.csv")
+I
+
+#Creating graph
+Ir <- graph.data.frame(I, directed = F)
+Ir
+
+#Plotting graph
+plot(Ir,layout=layout.fruchterman.reingold,vertex.size=8,vertex.color="blue",
+     vertex.frame.color="blue",vertex.label.cex=0.50,vertex.label.color="black",vertex.label.font=0.8,
+     edge.width = E(Ir)$weight*2)
+
+plot(Ir, layout=layout.fruchterman.reingold(Ir), vertices.color = V(Ir)$color, vertices.shape= V(Ir)$shape, edge.arrow.size=0.5)
+
+#Finding degree distribution
+degree_distribution(Ir,mode="in")
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+#Reading attr file!
+I2 <- read_csv(file = "9_11_HIJACKERS_ATTR.csv")
+I2
+
+#Creating graph
+Ir2 <- graph.data.frame(I2, directed = F)
+Ir2
+
+#Plotting graph
+plot(Ir2,layout=layout.fruchterman.reingold,vertex.size=9,vertex.color="blue",
+     vertex.frame.color="blue",vertex.label.cex=0.5,vertex.label.color="black",vertex.label.font=0.8,
+     edge.width = E(Ir2)$weight*0.25)
+
+#Finding degree distribution
+degree_distribution(Ir2,mode="in")
+degree_distribution(Ir2,mode="out")
+
+
+#Reading Associates file!!
+I3 <- read_csv(file = "9_11_HIJACKERS_ASSOCIATES.csv")
+I3
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
